@@ -17,47 +17,48 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  *
  */
 @ControllerAdvice
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler   {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-	@ExceptionHandler({ Exception.class,DataNotFoundException.class,DataValidationException.class })
-	public @ResponseBody ExceptionResponse  handleAllException(final Exception excep, final WebRequest request) {
+	@ExceptionHandler({ Exception.class, DataNotFoundException.class, DataValidationException.class })
+	public @ResponseBody ExceptionResponse handleAllException(final Exception excep, final WebRequest request) {
 
-		LOGGER.error("Exception in GlobalExceptionHandler ", excep);
-		ExceptionResponse response=new ExceptionResponse();
+		LOGGER.info("Exception in GlobalExceptionHandler ", excep);
+		ExceptionResponse response = new ExceptionResponse();
 		final HttpHeaders headers = new HttpHeaders();
 
 		if (excep instanceof DataNotFoundException) {
-			response= handleDataNotFoundException(excep, headers, request);
-		} else if(excep instanceof  DataValidationException) {
-			response= handleDataValidationException(excep, headers, request);
-		}else if (excep instanceof Exception) {
-			response= handleDefaultException(headers, request, excep);
+			response = handleDataNotFoundException(excep, headers, request);
+		} else if (excep instanceof DataValidationException) {
+			 
+		 response = handleDataValidationException(excep, headers, request);
+		} else if (excep instanceof Exception) {
+			response = handleDefaultException(headers, request, excep);
 		}
 
 		return response;
 
 	}
-	
-	private ExceptionResponse handleDataValidationException(Exception excep, HttpHeaders headers,WebRequest request) {
-		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), excep.getLocalizedMessage(),
-				request.getDescription(false),HttpStatus.NOT_ACCEPTABLE);
+
+	private ExceptionResponse handleDataValidationException(Exception excep, HttpHeaders headers, WebRequest request) {
+		LOGGER.info("Exception in handleDataValidationException ", excep);
+	ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(),excep.getMessage(),request.getDescription(false), HttpStatus.NOT_ACCEPTABLE);
 		return exceptionResponse;
 	}
 
-	private  ExceptionResponse  handleDataNotFoundException(Exception excep, HttpHeaders headers,
-			WebRequest request) {
+	private ExceptionResponse handleDataNotFoundException(Exception excep, HttpHeaders headers, WebRequest request) {
+		LOGGER.info("Exception in handleDataNotFoundException ", excep);
 		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), excep.getLocalizedMessage(),
-				request.getDescription(false),HttpStatus.NOT_FOUND);
+				request.getDescription(false), HttpStatus.NOT_FOUND);
 		return exceptionResponse;
 	}
 
-	public final  ExceptionResponse  handleDefaultException(HttpHeaders headers, WebRequest req,
-			Exception excep) {
+	public final ExceptionResponse handleDefaultException(HttpHeaders headers, WebRequest req, Exception excep) {
+		LOGGER.info("Exception in handleDefaultException ", excep);
 		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), excep.getLocalizedMessage(),
-				req.getDescription(false),HttpStatus.INTERNAL_SERVER_ERROR);
-		return  exceptionResponse;
+				req.getDescription(false), HttpStatus.INTERNAL_SERVER_ERROR);
+		return exceptionResponse;
 	}
 
 }

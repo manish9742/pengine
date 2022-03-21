@@ -11,25 +11,21 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class DataNotFoundException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
-	private   ExceptionResponse excp;
-	
 	
 	 /**
 	   * 
 	   * @param excp
 	   */
-	public DataNotFoundException(ExceptionResponse excp) {
+	public DataNotFoundException() {
 		super();
-		this.excp = excp;
 	}
 	
-	/**
-	   * Getter of excp.
-	   * @return excp
-	   */
-	  public ExceptionResponse getException() {
-	    return excp;
-	  }
+	
+	public DataNotFoundException(String message) {
+		super(message);
+	}
+	
+	
 	
 	
 

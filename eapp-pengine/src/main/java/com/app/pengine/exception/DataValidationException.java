@@ -6,25 +6,22 @@ public class DataValidationException extends RuntimeException {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private   ExceptionResponse excp;
+	private   String message;
 	
 	
 	 /**
 	   * 
 	   * @param excp
 	   */
-	public DataValidationException(ExceptionResponse excp) {
-		super();
-		this.excp = excp;
+	
+	public DataValidationException() {
+		 super();
+		 
 	}
 	
-	/**
-	   * Getter of excp.
-	   * @return excp
-	   */
-	  public ExceptionResponse getException() {
-	    return excp;
-	  }
+	public DataValidationException(String message) {
+		 super(message);
+		 
+	}
 	
-
 }
